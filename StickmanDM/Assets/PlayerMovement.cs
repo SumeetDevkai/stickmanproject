@@ -188,29 +188,23 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         Health -= value;
         
     }
-
     IEnumerator Teleport(GameObject playerHit, Vector3 x)
     {
-        playerHit.GetComponent<PlayerMovement>().canFlip = false;
-        playerHit.GetComponent<PlayerMovement>().canMove = false;
-        playerHit.GetComponent<PlayerMovement>().canJump = false;
+    //    playerHit.GetComponent<PlayerMovement>().canFlip = false;
+    //    playerHit.GetComponent<PlayerMovement>().canMove = false;
+    //    playerHit.GetComponent<PlayerMovement>().canJump = false;
         Debug.Log("should go to 22");
-        Spawn(playerHit, x);
+        photonView.RPC("Spawn", RpcTarget.All, (playerHit, x));
+
         yield return new WaitForSeconds(2f);
 
-        Spawn(playerHit, new Vector3(0, 0.5f, 0));
+        photonView.RPC("Spawn)", RpcTarget.All, (playerHit, new Vector3(0, 0.5f, 0)));
 
-        playerHit.GetComponent<PlayerMovement>().canFlip = true;
-        playerHit.GetComponent<PlayerMovement>().canMove = true;
-        playerHit.GetComponent<PlayerMovement>().canJump = true;
+        //playerHit.GetComponent<PlayerMovement>().canFlip = true;
+        //playerHit.GetComponent<PlayerMovement>().canMove = true;
+        //playerHit.GetComponent<PlayerMovement>().canJump = true;
     }
 
-    void Spawn(GameObject playerHit, Vector3 x)
-    {
-
-        Debug.Log("went to 22");
-        playerHit.transform.position = x;
-    }
 
     private void Jump()
     {
@@ -266,5 +260,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         {
             this.Health = (float)stream.ReceiveNext();
         }
+    }
+
+    
+
+    [PunRPC]
+    void Spawn(GameObject playerHit, Vector3 x)
+    {
+
+        Debug.Log("went to 22");
+        playerHit.transform.position = x;
     }
 }
