@@ -261,11 +261,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     void Spawn(int photonID, bool value)
     {
+        float xPos = UnityEngine.Random.Range(-5.25f,5f);
+
         PhotonView player = PhotonView.Find(photonID);
         player.gameObject.SetActive(value);
         player.GetComponent<PlayerMovement>().canFlip = value;
         player.GetComponent<PlayerMovement>().canMove = value;
         player.GetComponent<PlayerMovement>().canJump = value;
-        player.transform.position = new Vector3(0, 0.5f, 0);
+        player.transform.position = new Vector3(xPos, 0.5f, 0);
     }
 }
