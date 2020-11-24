@@ -241,7 +241,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            this.Health = (int)stream.ReceiveNext();
+            this.Health = (float)stream.ReceiveNext();
         }
     }
 }
