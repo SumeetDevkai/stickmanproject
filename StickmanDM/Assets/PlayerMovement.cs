@@ -195,11 +195,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     //    playerHit.GetComponent<PlayerMovement>().canMove = false;
     //    playerHit.GetComponent<PlayerMovement>().canJump = false;
         Debug.Log("should go to 22");
-        photonView.RPC("Spawn", RpcTarget.All, playerHit.GetComponent<PlayerMovement>().photonView.ViewID);
+        photonView.RPC("Spawn", RpcTarget.All, playerHit.GetComponent<PlayerMovement>().photonView.ViewID, false);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
-        photonView.RPC("Spawn", RpcTarget.All, playerHit.GetComponent<PlayerMovement>().photonView.ViewID);
+        photonView.RPC("Spawn", RpcTarget.All, playerHit.GetComponent<PlayerMovement>().photonView.ViewID, true);
 
         //playerHit.GetComponent<PlayerMovement>().canFlip = true;
         //playerHit.GetComponent<PlayerMovement>().canMove = true;
@@ -266,9 +266,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     
 
     [PunRPC]
-    void Spawn(int photonID)
+    void Spawn(int photonID, bool value)
     {
         PhotonView player = PhotonView.Find(photonID);
-        player.gameObject.transform.position = die;
+        player.gameObject.SetActive(value);
     }
 }
