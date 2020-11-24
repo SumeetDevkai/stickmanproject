@@ -29,7 +29,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField]
     private int GravityScale;
 
-
+    Vector3 die = new Vector3(0, 22, 0);
+    Vector3 respawn = new Vector3(0, 0.5f, 0);
     public float attackDamage;
     public float movementSpeed;
     public float jumpForce;
@@ -194,11 +195,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     //    playerHit.GetComponent<PlayerMovement>().canMove = false;
     //    playerHit.GetComponent<PlayerMovement>().canJump = false;
         Debug.Log("should go to 22");
-        photonView.RPC("Spawn", RpcTarget.All, playerHit, x);
+        photonView.RPC("Spawn", RpcTarget.All, playerHit.GetComponent<PlayerMovement>().photonView.ViewID);
 
         yield return new WaitForSeconds(2f);
 
-        photonView.RPC("Spawn)", RpcTarget.All, playerHit, new Vector3(0, 0.5f, 0));
+        photonView.RPC("Spawn", RpcTarget.All, playerHit.GetComponent<PlayerMovement>().photonView.ViewID);
 
         //playerHit.GetComponent<PlayerMovement>().canFlip = true;
         //playerHit.GetComponent<PlayerMovement>().canMove = true;
@@ -265,10 +266,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     
 
     [PunRPC]
-    void Spawn(GameObject playerHit, Vector3 x)
+    void Spawn(int photonID)
     {
-
-        Debug.Log("went to 22");
-        playerHit.transform.position = x;
+        PhotonView player = PhotonView.Find(photonID);
+        player.gameObject.transform.position = die;
     }
 }
