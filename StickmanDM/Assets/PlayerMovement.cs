@@ -192,10 +192,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     IEnumerator Teleport(GameObject playerHit, Vector3 x)
     {
         Debug.Log("should go to 22");
-        Teleport(playerHit, x);
+        Spawn(playerHit, x);
         yield return new WaitForSeconds(2f);
 
-        Teleport(playerHit, new Vector3(0, 0.5f, 0));
+        Spawn(playerHit, new Vector3(0, 0.5f, 0));
 
     }
 
