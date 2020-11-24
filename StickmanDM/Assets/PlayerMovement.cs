@@ -194,11 +194,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     //    playerHit.GetComponent<PlayerMovement>().canMove = false;
     //    playerHit.GetComponent<PlayerMovement>().canJump = false;
         Debug.Log("should go to 22");
-        photonView.RPC("Spawn", RpcTarget.All, (playerHit, x));
+        photonView.RPC("Spawn", RpcTarget.All, playerHit, x);
 
         yield return new WaitForSeconds(2f);
 
-        photonView.RPC("Spawn)", RpcTarget.All, (playerHit, new Vector3(0, 0.5f, 0)));
+        photonView.RPC("Spawn)", RpcTarget.All, playerHit, new Vector3(0, 0.5f, 0));
 
         //playerHit.GetComponent<PlayerMovement>().canFlip = true;
         //playerHit.GetComponent<PlayerMovement>().canMove = true;
