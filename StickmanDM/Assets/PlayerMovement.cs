@@ -178,8 +178,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
         foreach (Collider2D enemy in enemies)
         {
-            Teleport(enemy.gameObject, new Vector3 (0,50,0));
-            Invoke("Teleport(enemy.gameObject, new Vector3(0, 0.5f, 0)", 2f);
+            StartCoroutine(Teleport(enemy.gameObject, new Vector3(0, 22, 0)));
         }
     }
 
@@ -190,7 +189,16 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         
     }
 
-    public void Teleport(GameObject playerHit, Vector3 x)
+    IEnumerator Teleport(GameObject playerHit, Vector3 x)
+    {
+        Teleport(playerHit, x);
+        yield return new WaitForSeconds(2f);
+
+        Teleport(playerHit, new Vector3(0, 0.5f, 0));
+
+    }
+
+    void Spawn(GameObject playerHit, Vector3 x)
     {
         playerHit.transform.position = x;
     }
