@@ -191,12 +191,18 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
     IEnumerator Teleport(GameObject playerHit, Vector3 x)
     {
+        playerHit.GetComponent<PlayerMovement>().canFlip = false;
+        playerHit.GetComponent<PlayerMovement>().canMove = false;
+        playerHit.GetComponent<PlayerMovement>().canJump = false;
         Debug.Log("should go to 22");
         Spawn(playerHit, x);
         yield return new WaitForSeconds(2f);
 
         Spawn(playerHit, new Vector3(0, 0.5f, 0));
 
+        playerHit.GetComponent<PlayerMovement>().canFlip = true;
+        playerHit.GetComponent<PlayerMovement>().canMove = true;
+        playerHit.GetComponent<PlayerMovement>().canJump = true;
     }
 
     void Spawn(GameObject playerHit, Vector3 x)
