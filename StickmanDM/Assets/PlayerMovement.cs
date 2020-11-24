@@ -178,7 +178,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
         foreach (Collider2D enemy in enemies)
         {
-                enemy.GetComponent<PlayerMovement>().TakeDamage(attackDamage);
+            Teleport(enemy.gameObject, new Vector3 (0,50,0));
+            Invoke("Teleport(enemy.gameObject, new Vector3(0, 0.5f, 0)", 2f);
         }
     }
 
@@ -187,6 +188,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         Debug.Log("attacked");
         Health -= value;
         
+    }
+
+    public void Teleport(GameObject playerHit, Vector3 x)
+    {
+        playerHit.transform.position = x;
     }
 
     private void Jump()

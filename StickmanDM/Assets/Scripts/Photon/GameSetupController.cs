@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class GameSetupController : MonoBehaviour
 {
+    public List<GameObject> playerPrefabs;
 
     List<GameObject> players;
 
@@ -22,7 +23,7 @@ public class GameSetupController : MonoBehaviour
 
     private void CreatePlayer()
     {
-        GameObject x = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonPlayer"), new Vector3(0,1,0), Quaternion.identity); // "PhotonPlayer = player gameobject name"
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonPlayer"), new Vector3(0,1,0), Quaternion.identity); // "PhotonPlayer = player gameobject name"
   
     }
 
