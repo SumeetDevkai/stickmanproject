@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class GameSetupController : MonoBehaviour
 {
     GameObject[] objs;
-
+    int[] scorez;
     public Text[] scores, names;
     public int GameTimeLimit;
 
@@ -18,6 +18,8 @@ public class GameSetupController : MonoBehaviour
 
     void Start()
     {
+        scorez = new int[scores.Length];
+
         PlayStartSound();
         Invoke("CreatePlayer", 3f);
         //CreatePlayer();
@@ -31,6 +33,11 @@ public class GameSetupController : MonoBehaviour
         if(GameTimeLimit == 0)
         {
             //FinishGame
+
+            string max = FindMaxInArr();
+
+            PlayerPrefs.SetString("Winner", max);
+
             PhotonNetwork.LoadLevel(3);
         }
         else
@@ -38,6 +45,22 @@ public class GameSetupController : MonoBehaviour
             GameTimeLimit--;
             Invoke("GameEnd", 1f);
         }
+    }
+
+    private string FindMaxInArr()
+    {
+        int max = int.MinValue,
+            index = -1, maxInd = 0;
+        foreach (int item in scorez)
+        {
+            index++;
+            if (item > max)
+            { 
+                max = item;
+                maxInd = index;
+            }
+        }
+        return objs[maxInd].GetComponent<PlayerMovement>().GetNickName();
     }
 
     // Update is called once per frame
@@ -61,7 +84,7 @@ public class GameSetupController : MonoBehaviour
         for (int i = 0; i < objs.Length; i++)
         {
             scores[i].text = objs[i].GetComponent<PlayerMovement>().GetPlayerScore().ToString();
-
+            scorez[i] = objs[i].GetComponent<PlayerMovement>().GetPlayerScore();
             names[i].text = objs[i].GetComponent<PlayerMovement>().GetNickName().ToString();
         }
 

@@ -9,7 +9,7 @@ public class Finisher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        t.text = "WINNER : " + PlayerPrefs.GetString("NickName");
+        t.text = "WINNER : " + PlayerPrefs.GetString("Winner");
         Invoke("MM", 7f);
     }
 
