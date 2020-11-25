@@ -48,6 +48,8 @@ public class CustomMatchmakingLobby : MonoBehaviourPunCallbacks
 
     public void JoinLobbyOnClick()
     {
+        ClickSound();
+
         mainPanel.SetActive(false);
         lobbyPanel.SetActive(true);
         PhotonNetwork.JoinLobby();
@@ -112,6 +114,8 @@ public class CustomMatchmakingLobby : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
+        ClickSound();
+
         RoomOptions roomOps = new RoomOptions { IsVisible = true, IsOpen = true, MaxPlayers = (byte)5 };
         PhotonNetwork.CreateRoom(roomName, roomOps);
     }
@@ -123,8 +127,18 @@ public class CustomMatchmakingLobby : MonoBehaviourPunCallbacks
     }
     public void MatchmakingCancel()
     {
+        ClickSound();
+
         mainPanel.SetActive(true);
         lobbyPanel.SetActive(false);
         PhotonNetwork.LeaveLobby();
+    }
+
+
+    public AudioSource clickSound;
+
+    private void ClickSound()
+    {
+        clickSound.Play();
     }
 }

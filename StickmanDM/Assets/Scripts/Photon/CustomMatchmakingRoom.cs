@@ -75,6 +75,8 @@ public class CustomMatchmakingRoom : MonoBehaviourPunCallbacks
     } 
     public void startGame()
     {
+        ClickSound();
+
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -90,10 +92,18 @@ public class CustomMatchmakingRoom : MonoBehaviourPunCallbacks
 
     public void BackOnClick()
     {
+        ClickSound();
+
         lobbyPanel.SetActive(true);
         roomPanel.SetActive(false);
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LeaveLobby();
         StartCoroutine(rejoinLobby());
+    }
+
+    public AudioSource audioSource;
+    private void ClickSound()
+    {
+        audioSource.Play();
     }
 }

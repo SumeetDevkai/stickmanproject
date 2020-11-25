@@ -9,8 +9,14 @@ public class UIScript : MonoBehaviour
     private float loadTime;
     private float minimumLogoTime = 3.0f;
 
+    public AudioSource source;
+
     private void Start()
     {
+        Screen.SetResolution(1024, 768, FullScreenMode.ExclusiveFullScreen);
+
+        Invoke("PlaySound", .2f);
+
         fadeGroup = FindObjectOfType<CanvasGroup>();
 
         fadeGroup.alpha = 1;
@@ -19,6 +25,11 @@ public class UIScript : MonoBehaviour
             loadTime = minimumLogoTime;
         else
             loadTime = Time.time;
+    }
+
+    private void PlaySound()
+    {
+        source.Play();
     }
 
     private void Update()

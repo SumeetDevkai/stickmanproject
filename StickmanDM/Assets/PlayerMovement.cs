@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 {
+    private int PlayerScore;
+
     public new PhotonView photonView;
 
     private float HorizontalInputDirection;
@@ -47,6 +50,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
+        PlayerScore = 0;
+        PlayerPrefs.SetInt("PlayerScore", PlayerScore);
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         amountOfJumpsLeft = amountOfJumps;
@@ -74,6 +79,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         CheckSurroundings();
     }
 
+    public int GetPlayerScore()
+    {
+        return PlayerScore;
+    }
 
     private void CheckSurroundings()
     {
@@ -177,8 +186,18 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
 
         foreach (Collider2D enemy in enemies)
         {
+            enemy.GetComponent<PlayerMovement>().Die();
             StartCoroutine(Teleport(enemy.gameObject, new Vector3(0, 22, 0)));
         }
+
+
+
+        Invoke( "Attackbool" ,.3f);
+    }
+
+    private void Die()
+    {
+        anim.SetBool("death", true);
     }
 
     public void TakeDamage(float value)
@@ -191,12 +210,17 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
     {
           
         Debug.Log("should go to 22");
+
+        yield return new WaitForSeconds(2f);
+        
         photonView.RPC("Spawn", RpcTarget.All, playerHit.GetComponent<PlayerMovement>().photonView.ViewID, false);
 
         yield return new WaitForSeconds(5f);
 
         photonView.RPC("Spawn", RpcTarget.All, playerHit.GetComponent<PlayerMovement>().photonView.ViewID, true);
 
+        PlayerScore += 1;
+        PlayerPrefs.SetInt("PlayerScore", PlayerScore);
     }
 
 
@@ -269,5 +293,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks, IPunObservable
         player.GetComponent<PlayerMovement>().canMove = value;
         player.GetComponent<PlayerMovement>().canJump = value;
         player.transform.position = new Vector3(xPos, 0.5f, 0);
+    }
+
+    public string GetNickName()
+    {
+        return PlayerPrefs.GetString("NickName");
     }
 }
